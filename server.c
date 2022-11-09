@@ -61,12 +61,21 @@ void handleClient(int socket) {
         puts("Message: ");
         ask(buffer);
 
+        // on gere ici les commandes
+        if (strcmp(buffer, "/quit") == 0) {
+            puts("Exiting...");
+            shutdown(socket, SHUT_RDWR);
+            close(socket);
+            break;
+        }
+
         puts("[server] Send msg to client");
         len = send(socket, buffer, strlen(buffer), 0);
         if (len < 0) {
             perror("send");
             break;
         }
+
         printf("[server] Message sent: %s nb: %lu\n", buffer, len);
     }
 }
