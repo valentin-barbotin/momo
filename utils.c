@@ -7,6 +7,7 @@
 
 void    ask(char *buffer) {
     int len;
+    memset(buffer, 0, 1024);
 
     do
     {

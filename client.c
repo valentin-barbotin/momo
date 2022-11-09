@@ -13,23 +13,47 @@
 
 void    handle(int socket, char *buffer) {
     ssize_t     len;
-
+    char        peername[128] = {0};
     t_user user;
 
     puts("What's your username?");
     ask(user.name);
 
+    ////////
+    len = send(socket, user.name, strlen(user.name), 0);
+    if (len < 0) {
+        perror("send");
+        return;
+    }
+    ////////
+    //recuperer le nom du client
+    len = recv(socket, peername, 128, 0);
+    if (len == 0) {
+        puts("[server] Server disconnected");
+        return;
+    }
+    if (len < 0) {
+        perror("recv");
+        return;
+    }
+    ////////
+
     while (true)
     {
         puts("[client] Send msg to server");
+
+        puts("Message: ");
+        ask(buffer);
         len = send(socket, buffer, strlen(buffer), 0);
         if (len < 0) {
             perror("send");
             break;
         }
-
+        printf("[client] Message sent: %s nb: %lu\n", buffer, len);
+ 
         puts("[client] Waiting for a message...");
 
+        memset(buffer, 0, 1024);
         len = recv(socket, buffer, 1024, 0);
         if (len == 0) {
             puts("[client] Server disconnected");
@@ -40,12 +64,8 @@ void    handle(int socket, char *buffer) {
             break;
         }
 
-        printf("[client] Message received: %s\n", buffer);
-
-        memset(buffer, 0, 1024);
-
-        puts("Insert a message to send to the client");
-        ask(buffer);
+        printf("%s: %s\n", peername, buffer);
+        // printf("[client] Message received: %s\n", buffer);
     }
 }
 
@@ -66,10 +86,10 @@ void    mainClient() {
 
     printf("Socket created: %d\n", sock);
 
-    puts("Host to connect to?");
-    ask(buffer);
+    // puts("Host to connect to?");
+    // ask(buffer);
 
-    addr.sin_addr.s_addr = inet_addr(buffer);
+    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
     addr.sin_port = htons(8080);
     addr.sin_family = AF_INET;
 

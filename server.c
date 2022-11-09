@@ -14,12 +14,32 @@
 
 void handleClient(int socket) {
     char        buffer[1024] = {0};
+    char        peername[128] = {0};
     ssize_t     len;
-
     t_user user;
 
     puts("What's your username?");
     ask(user.name);
+
+    //recuperer le nom du client
+    len = recv(socket, peername, 128, 0);
+    if (len == 0) {
+        puts("[server] Server disconnected");
+        return;
+    }
+    if (len < 0) {
+        perror("recv");
+        return;
+    }
+
+    ////////
+    len = send(socket, user.name, strlen(user.name), 0);
+    if (len < 0) {
+        perror("send");
+        return;
+    }
+    ////////
+
 
     while (true)
     {
@@ -35,7 +55,11 @@ void handleClient(int socket) {
             break;
         }
 
-        printf("[server] Message received: %s\n", buffer);
+        // printf("[server] Message received: %s\n", buffer);
+        printf("%s: %s\n", peername, buffer);
+
+        puts("Message: ");
+        ask(buffer);
 
         puts("[server] Send msg to client");
         len = send(socket, buffer, strlen(buffer), 0);
@@ -43,11 +67,7 @@ void handleClient(int socket) {
             perror("send");
             break;
         }
-
-        memset(buffer, 0, 1024);
-
-        puts("Insert a message to send to the client");
-        ask(buffer);
+        printf("[server] Message sent: %s nb: %lu\n", buffer, len);
     }
 }
 
