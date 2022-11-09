@@ -12,11 +12,11 @@
 #include "utils.h"
 #include "user.h"
 
-void handleClient(int socket) {
+void handleClient(int socket, char **blacklist, int blacklistSize) {
     char        buffer[1024] = {0};
     char        peername[128] = {0};
     ssize_t     len;
-    t_user user;
+    t_user      user;
 
     puts("What's your username?");
     ask(user.name);
@@ -55,6 +55,9 @@ void handleClient(int socket) {
             break;
         }
 
+        // on censure les mots recu en regardant la blacklist
+        censure(blacklist, blacklistSize, buffer);
+
         // printf("[server] Message received: %s\n", buffer);
         printf("%s: %s\n", peername, buffer);
 
@@ -69,6 +72,9 @@ void handleClient(int socket) {
             break;
         }
 
+         // censurer dans mon envoi les mots de la blacklist
+        censure(blacklist, blacklistSize, buffer);
+
         puts("[server] Send msg to client");
         len = send(socket, buffer, strlen(buffer), 0);
         if (len < 0) {
@@ -81,7 +87,7 @@ void handleClient(int socket) {
 }
 
 
-void mainServer() {
+void mainServer(char **blacklist, int blacklistSize) {
     puts("Starting server...");
 
     int                 sock;
@@ -139,7 +145,7 @@ void mainServer() {
         if (pid == 0) {
             // je suis le nouveau processus
             puts("New process");
-            handleClient(socketClient);
+            handleClient(socketClient, blacklist, blacklistSize);
             // on ira jamais ici
         }
 

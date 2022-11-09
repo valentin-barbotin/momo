@@ -7,7 +7,8 @@
 
 void    ask(char *buffer) {
     int len;
-    memset(buffer, 0, 1024);
+    *buffer = 0;
+    // memset(buffer, 0, 1024);
 
     do
     {
@@ -19,4 +20,18 @@ void    ask(char *buffer) {
             puts("Please enter a text.");
         }
     } while (!len);
+}
+
+void    censure(char **blacklist, int blacklistSize, char *buffer) {
+    for (int i = 0; i < blacklistSize; i++)
+    {
+        char *pos = strstr(buffer, blacklist[i]);
+        if (pos) {
+            int len = strlen(blacklist[i]);
+            for (int j = 0; j < len; j++)
+            {
+                pos[j] = '*';
+            }
+        }
+    }
 }

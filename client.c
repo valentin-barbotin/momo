@@ -11,10 +11,10 @@
 #include "utils.h"
 #include "user.h"
 
-void    handle(int socket, char *buffer) {
+void    handle(int socket, char *buffer, char **blacklist, int blacklistSize) {
     ssize_t     len;
     char        peername[128] = {0};
-    t_user user;
+    t_user      user;
 
     puts("What's your username?");
     ask(user.name);
@@ -53,6 +53,9 @@ void    handle(int socket, char *buffer) {
             break;
         }
 
+        // censurer dans mon envoi les mots de la blacklist
+        censure(blacklist, blacklistSize, buffer);
+
         len = send(socket, buffer, strlen(buffer), 0);
         if (len < 0) {
             perror("send");
@@ -73,12 +76,15 @@ void    handle(int socket, char *buffer) {
             break;
         }
 
+        // on censure les mots recu en regardant la blacklist
+        censure(blacklist, blacklistSize, buffer);
+
         printf("%s: %s\n", peername, buffer);
         // printf("[client] Message received: %s\n", buffer);
     }
 }
 
-void    mainClient() {
+void    mainClient(char **blacklist, int blacklistSize) {
     puts("Connecting...");
 
     int                 sock;
@@ -111,5 +117,5 @@ void    mainClient() {
     puts("Connected!");
 
 
-    handle(sock, buffer);
+    handle(sock, buffer, blacklist, blacklistSize);
 }
