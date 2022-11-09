@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "*.ejs": "html",
+        "*.a": "nasm",
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "cstdlib": "c",
+        "server.h": "c",
+        "client.h": "c",
+        "errno.h": "c",
+        "unistd.h": "c",
+        "stdbool.h": "c",
+        "sstream": "c",
+        "utils.h": "c"
+    }
+}

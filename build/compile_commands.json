@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/home/kazuh/testmomo/build",
+  "command": "/sbin/clang -g -o CMakeFiles/momolabg.dir/main.c.o -c /home/kazuh/testmomo/main.c",
+  "file": "/home/kazuh/testmomo/main.c"
+},
+{
+  "directory": "/home/kazuh/testmomo/build",
+  "command": "/sbin/clang -g -o CMakeFiles/momolabg.dir/client.c.o -c /home/kazuh/testmomo/client.c",
+  "file": "/home/kazuh/testmomo/client.c"
+},
+{
+  "directory": "/home/kazuh/testmomo/build",
+  "command": "/sbin/clang -g -o CMakeFiles/momolabg.dir/server.c.o -c /home/kazuh/testmomo/server.c",
+  "file": "/home/kazuh/testmomo/server.c"
+},
+{
+  "directory": "/home/kazuh/testmomo/build",
+  "command": "/sbin/clang -g -o CMakeFiles/momolabg.dir/utils.c.o -c /home/kazuh/testmomo/utils.c",
+  "file": "/home/kazuh/testmomo/utils.c"
+},
+{
+  "directory": "/home/kazuh/testmomo/build",
+  "command": "/sbin/clang -g -o CMakeFiles/momolabg.dir/user.c.o -c /home/kazuh/testmomo/user.c",
+  "file": "/home/kazuh/testmomo/user.c"
+}
+]
